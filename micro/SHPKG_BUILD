@@ -2,7 +2,20 @@
 shpkg_name="Micro"
 
 # package build dependencies
-shpkg_build_depends="golang build-essential"
+case "${SHPKG_DISTRO}" in
+    debian|termux)
+        shpkg_build_depends="golang build-essential"
+        ;;
+    archlinux)
+        shpkg_build_depends="go base-devel"
+        ;;
+    redhat)
+        shpkg_build_depends="golang make automake gcc"
+        ;;
+    alpine)
+        shpkg_build_depends="go alpine-sdk"
+        ;;
+esac
 
 # package source code
 shpkg_source="https://github.com/zyedidia/micro/archive/refs/tags/v2.0.9.tar.gz"
@@ -27,9 +40,9 @@ build(){
 
 finish(){
     echo "Installing micro..."
-    ${SHPKG_SUDO} cp micro $INSTALL_PREFIX/bin/shpkg-micro
+    ${SHPKG_SUDO} cp micro ${INSTALL_PREFIX}/bin/shpkg-micro
 }
 
 remove(){
-	${SHPKG_SUDO} rm -rf $INSTALL_PREFIX/bin/shpkg-micro
+	${SHPKG_SUDO} rm -rf ${INSTALL_PREFIX}/bin/shpkg-micro
 }

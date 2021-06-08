@@ -2,7 +2,20 @@
 shpkg_name="GNU Nano"
 
 # package build dependencies
-shpkg_build_depends="build-essential"
+case "${SHPKG_DISTRO}" in
+    debian|termux)
+        shpkg_build_depends="build-essential"
+        ;;
+    archlinux)
+        shpkg_build_depends="base-devel"
+        ;;
+    redhat)
+        shpkg_build_depends="make automake gcc"
+        ;;
+    alpine)
+        shpkg_build_depends="alpine-sdk"
+        ;;
+esac
 
 # package source code
 shpkg_source="https://www.nano-editor.org/dist/v5/nano-5.7.tar.xz"
