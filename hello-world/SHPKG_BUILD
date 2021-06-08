@@ -1,0 +1,39 @@
+# package name
+shpkg_name="Hello World"
+
+# package build dependencies
+shpkg_build_depends="clang"
+
+# package source code
+shpkg_source="https://github.com/shpkg/hello-world/archive/refs/heads/master.zip"
+
+# tell whether to use zip as an extractor
+shpkg_source_archive_zip="true"
+
+# tell whether to print output of extraction (default: false)
+shpkg_enable_verbose_logging="false"
+
+# detect distro
+case "${SHPKG_DISTRO}" in
+    termux)
+        INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr/bin"
+    *)
+        INSTALL_PREFIX="/usr/local/bin"
+esac
+
+prepare(){
+    cd "${SRCDIR}/hello-world-master"
+}
+
+build(){
+    clang hello-world.c -o shpkg-hello
+}
+
+finish(){
+    echo "Installing shpkg-hello binary..."
+    ${SHPKG_SUDO} install -m 700 shpkg-hello "${INSTALL_PREFIX}"
+}
+
+remove(){
+    ${SHPKG_SUDO} rm -rf "${INSTALL_PREFIX}/shpkg-hello"
+}
