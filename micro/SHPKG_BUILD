@@ -1,0 +1,35 @@
+# package name
+shpkg_name="Micro"
+
+# package build dependencies
+shpkg_build_depends="golang build-essential"
+
+# package source code
+shpkg_source="https://github.com/zyedidia/micro/archive/refs/tags/v2.0.9.tar.gz"
+
+# detect distro
+case "${SHPKG_DISTRO}" in
+    termux)
+        INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr"
+        ;;
+    *)
+        INSTALL_PREFIX="/usr/local"
+        ;;
+esac
+
+prepare(){
+	cd ${SRCDIR}
+}
+
+build(){
+    make -j$(nproc)
+}
+
+finish(){
+    echo "Installing micro..."
+    ${SHPKG_SUDO} cp micro $INSTALL_PREFIX/bin/shpkg-micro
+}
+
+remove(){
+	${SHPKG_SUDO} rm -rf $INSTALL_PREFIX/bin/shpkg-micro
+}

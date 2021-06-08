@@ -1,0 +1,40 @@
+# package name
+shpkg_name="GNU Nano"
+
+# package build dependencies
+shpkg_build_depends="build-essential"
+
+# package source code
+shpkg_source="https://www.nano-editor.org/dist/v5/nano-5.7.tar.xz"
+
+# detect distro
+case "${SHPKG_DISTRO}" in
+    termux)
+        INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr/opt/shpkg"
+        INSTALL_PREFIX_POST="${SHPKG_TERMUXROOT}/usr"
+        ;;
+    *)
+        INSTALL_PREFIX="/opt/shpkg"
+        INSTALL_PREFIX_POST="/usr/local"
+        ;;
+esac
+
+prepare(){
+	cd ${SRCDIR}
+	./configure --prefix=${INSTALL_PREFIX}
+}
+
+build(){
+    make -j$(nproc)
+}
+
+finish(){
+    echo "Installing nano..."
+    ${SHPKG_SUDO} make install
+    ${SHPKG_SUDO} ln ${INSTALL_PREFIX}/bin/nano -s ${INSTALL_PREFIX_POST}/bin/shpkg-nano
+}
+
+remove(){
+	${SHPKG_SUDO} rm -rf ${INSTALL_PREFIX}
+	${SHPKG_SUDO} rm -rf ${INSTALL_PREFIX_POST}/bin/shpkg-nano
+}
