@@ -24,5 +24,5 @@ finish(){
 }
 
 remove(){
-    rm -rf "${HOME}/.icons/Flat-Remix*"
+    rm -rf ${HOME}/.icons/Flat-Remix*
 }
