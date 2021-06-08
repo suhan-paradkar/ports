@@ -33,7 +33,7 @@ build(){
 
 finish(){
     echo "Installing shpkg-hello binary..."
-    ${SHPKG_SUDO} install -m 700 shpkg-hello "${INSTALL_PREFIX}"
+    ${SHPKG_SUDO} install -m 755 shpkg-hello "${INSTALL_PREFIX}"
 }
 
 remove(){
