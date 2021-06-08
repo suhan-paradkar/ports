@@ -17,8 +17,10 @@ shpkg_enable_verbose_logging="false"
 case "${SHPKG_DISTRO}" in
     termux)
         INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr/bin"
+        ;;
     *)
         INSTALL_PREFIX="/usr/local/bin"
+        ;;
 esac
 
 prepare(){
