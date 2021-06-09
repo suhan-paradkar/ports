@@ -11,18 +11,18 @@ shpkg_source_archive_zip="true"
 shpkg_enable_verbose_logging="false"
 
 prepare(){
-    cd "${SRCDIR}/flat-remix-gtk-master"
-    if [ ! -d "${HOME}/.themes" ]; then
-        mkdir -p "${HOME}/.themes"
-    else
-        rm -rf "${HOME}/.themes/Flat-Remix*"
-    fi
+	cd "${SRCDIR}/flat-remix-gtk-master"
+	if [ ! -d "${HOME}/.themes" ]; then
+		mkdir -p "${HOME}/.themes"
+	else
+		rm -rf "${HOME}/.themes/Flat-Remix*"
+	fi
 }
 
 finish(){
-    mv Flat-Remix* "${HOME}/.themes"
+	mv Flat-Remix* "${HOME}/.themes"
 }
 
 remove(){
-    rm -rf ${HOME}/.themes/Flat-Remix*
+	rm -rf ${HOME}/.themes/Flat-Remix*
 }

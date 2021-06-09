@@ -3,21 +3,21 @@ shpkg_name="Micro"
 
 # package build dependencies
 case "${SHPKG_DISTRO}" in
-    debian|termux)
-        shpkg_build_depends="golang build-essential"
-        ;;
-    archlinux)
-        shpkg_build_depends="go base-devel"
-        ;;
-    redhat)
-        shpkg_build_depends="golang make automake clang"
-        ;;
-    alpine)
-        shpkg_build_depends="go alpine-sdk"
-        ;;
-    nixos)
-        shpkg_build_depends="go automake clang"
-        ;;
+	debian|termux)
+		shpkg_build_depends="golang build-essential"
+		;;
+	archlinux)
+		shpkg_build_depends="go base-devel"
+		;;
+	redhat)
+		shpkg_build_depends="golang make automake clang"
+		;;
+	alpine)
+        	shpkg_build_depends="go alpine-sdk"
+        	;;
+	nixos)
+		shpkg_build_depends="go automake clang"
+		;;
 esac
 
 # package source code
@@ -25,12 +25,12 @@ shpkg_source="https://github.com/zyedidia/micro/archive/refs/tags/v2.0.9.tar.gz"
 
 # detect distro
 case "${SHPKG_DISTRO}" in
-    termux)
-        INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr"
-        ;;
-    *)
-        INSTALL_PREFIX="/usr/local"
-        ;;
+	termux)
+		INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr"
+		;;
+	*)
+		INSTALL_PREFIX="/usr/local"
+		;;
 esac
 
 prepare(){
@@ -38,12 +38,12 @@ prepare(){
 }
 
 build(){
-    make -j$(nproc)
+	make -j$(nproc)
 }
 
 finish(){
-    echo "Installing micro..."
-    ${SHPKG_SUDO} cp micro ${INSTALL_PREFIX}/bin/shpkg-micro
+	echo "Installing micro..."
+	${SHPKG_SUDO} cp micro ${INSTALL_PREFIX}/bin/shpkg-micro
 }
 
 remove(){

@@ -15,27 +15,27 @@ shpkg_enable_verbose_logging="false"
 
 # detect distro
 case "${SHPKG_DISTRO}" in
-    termux)
-        INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr/bin"
-        ;;
-    *)
-        INSTALL_PREFIX="/usr/local/bin"
-        ;;
+	termux)
+		INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr/bin"
+		;;
+	*)
+		INSTALL_PREFIX="/usr/local/bin"
+		;;
 esac
 
 prepare(){
-    cd "${SRCDIR}/hello-world-master"
+	cd "${SRCDIR}/hello-world-master"
 }
 
 build(){
-    clang hello-world.c -o shpkg-hello
+	clang hello-world.c -o shpkg-hello
 }
 
 finish(){
-    echo "Installing shpkg-hello binary..."
-    ${SHPKG_SUDO} install -m 755 shpkg-hello "${INSTALL_PREFIX}"
+	echo "Installing shpkg-hello binary..."
+	${SHPKG_SUDO} install -m 755 shpkg-hello "${INSTALL_PREFIX}"
 }
 
 remove(){
-    ${SHPKG_SUDO} rm -rf "${INSTALL_PREFIX}/shpkg-hello"
+	${SHPKG_SUDO} rm -rf "${INSTALL_PREFIX}/shpkg-hello"
 }
