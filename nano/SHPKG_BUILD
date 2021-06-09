@@ -11,13 +11,13 @@ case "${SHPKG_DISTRO}" in
 		shpkg_depends="ncurses"
 		;;
 	redhat)
-		shpkg_build_depends="ncurses-devel make automake clang"
+		shpkg_build_depends="ncurses-devel make automake gcc clang"
 		;;
 	alpine)
-		shpkg_build_depends="ncurses-dev alpine-sdk"
+		shpkg_build_depends="linux-headers ncurses-dev alpine-sdk"
 		;;
 	nixos)
-        	shpkg_build_depends="automake clang"
+        	shpkg_build_depends="automake gcc clang"
 		shpkg_depends="ncurses"
         	;;
 	termux)
