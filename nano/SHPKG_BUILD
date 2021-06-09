@@ -3,21 +3,28 @@ shpkg_name="GNU Nano"
 
 # package build dependencies
 case "${SHPKG_DISTRO}" in
-    debian|termux)
-        shpkg_build_depends="build-essential"
-        ;;
-    archlinux)
-        shpkg_build_depends="base-devel"
-        ;;
-    redhat)
-        shpkg_build_depends="make automake clang"
-        ;;
-    alpine)
-        shpkg_build_depends="alpine-sdk"
-        ;;
-    nixos)
-        shpkg_build_depends="automake clang"
-        ;;
+	debian)
+        	shpkg_build_depends="libncurses-dev build-essential"
+		;;
+	archlinux)
+		shpkg_build_depends="base-devel"
+		shpkg_depends="ncurses"
+		;;
+	redhat)
+		shpkg_build_depends="ncurses-devel make automake clang"
+		;;
+	alpine)
+		shpkg_build_depends="alpine-sdk"
+		shpkg_depends="ncurses"
+		;;
+	nixos)
+        	shpkg_build_depends="automake clang"
+		shpkg_depends="ncurses"
+        	;;
+	termux)
+		shpkg_build_depenes="build-essential"
+		shpkg_depends="ncurses"
+		;;
 esac
 
 # package source code
@@ -25,14 +32,14 @@ shpkg_source="https://www.nano-editor.org/dist/v5/nano-5.7.tar.xz"
 
 # detect distro
 case "${SHPKG_DISTRO}" in
-    termux)
-        INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr/opt/nano-5.7"
-        BINDIR="${SHPKG_TERMUXROOT}/usr/bin"
-        ;;
-    *)
-        INSTALL_PREFIX="/opt/nano-5.7"
-        BINDIR="/usr/local/bin"
-        ;;
+	termux)
+        	INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr/opt/nano-5.7"
+		BINDIR="${SHPKG_TERMUXROOT}/usr/bin"
+		;;
+	*)
+        	INSTALL_PREFIX="/opt/nano-5.7"
+		BINDIR="/usr/local/bin"
+		;;
 esac
 
 prepare(){
@@ -41,16 +48,16 @@ prepare(){
 }
 
 build(){
-    make -j$(nproc)
+	make -j$(nproc)
 }
 
 finish(){
-    echo "Installing nano..."
-    ${SHPKG_SUDO} make install
-    ${SHPKG_SUDO} ln -rs ${INSTALL_PREFIX}/bin/nano ${BINDIR}/shpkg-nano
+	echo "Installing nano..."
+	${SHPKG_SUDO} make install
+	${SHPKG_SUDO} ln -rs ${INSTALL_PREFIX}/bin/nano ${BINDIR}/shpkg-nano
 }
 
 remove(){
 	${SHPKG_SUDO} rm -rf ${INSTALL_PREFIX}
-    ${SHPKG_SUDO} rm -rf ${BINDIR}/shpkg-nano
+	${SHPKG_SUDO} rm -rf ${BINDIR}/shpkg-nano
 }
