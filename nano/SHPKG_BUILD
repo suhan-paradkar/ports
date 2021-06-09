@@ -15,6 +15,9 @@ case "${SHPKG_DISTRO}" in
     alpine)
         shpkg_build_depends="alpine-sdk"
         ;;
+    nixos)
+        shpkg_build_depends="automake gcc"
+        ;;
 esac
 
 # package source code
@@ -24,9 +27,11 @@ shpkg_source="https://www.nano-editor.org/dist/v5/nano-5.7.tar.xz"
 case "${SHPKG_DISTRO}" in
     termux)
         INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr/opt/nano-5.7"
+        BINDIR="${SHPKG_TERMUXROOT}/usr/bin"
         ;;
     *)
         INSTALL_PREFIX="/opt/nano-5.7"
+        BINDIR="/usr/local/bin"
         ;;
 esac
 
@@ -42,8 +47,10 @@ build(){
 finish(){
     echo "Installing nano..."
     ${SHPKG_SUDO} make install
+    ${SHPKG_SUDO} ln -rs ${INSTALL_PREFIX}/bin/nano ${BINDIR}/shpkg-nano
 }
 
 remove(){
 	${SHPKG_SUDO} rm -rf ${INSTALL_PREFIX}
+    ${SHPKG_SUDO} rm -rf ${BINDIR}/shpkg-nano
 }

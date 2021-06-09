@@ -15,6 +15,9 @@ case "${SHPKG_DISTRO}" in
     alpine)
         shpkg_build_depends="go alpine-sdk"
         ;;
+    nixos)
+        shpkg_build_depends="go automake gcc"
+        ;;
 esac
 
 # package source code
