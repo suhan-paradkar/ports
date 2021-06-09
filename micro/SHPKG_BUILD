@@ -10,13 +10,13 @@ case "${SHPKG_DISTRO}" in
 		shpkg_build_depends="go base-devel"
 		;;
 	redhat)
-		shpkg_build_depends="golang make automake clang"
+		shpkg_build_depends="golang make automake gcc clang"
 		;;
 	alpine)
         	shpkg_build_depends="go alpine-sdk"
         	;;
 	nixos)
-		shpkg_build_depends="go automake clang"
+		shpkg_build_depends="go automake gcc clang"
 		;;
 esac
 
