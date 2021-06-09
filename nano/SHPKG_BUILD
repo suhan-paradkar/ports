@@ -10,13 +10,13 @@ case "${SHPKG_DISTRO}" in
         shpkg_build_depends="base-devel"
         ;;
     redhat)
-        shpkg_build_depends="make automake gcc"
+        shpkg_build_depends="make automake clang"
         ;;
     alpine)
         shpkg_build_depends="alpine-sdk"
         ;;
     nixos)
-        shpkg_build_depends="automake gcc"
+        shpkg_build_depends="automake clang"
         ;;
 esac
 
