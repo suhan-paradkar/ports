@@ -53,7 +53,7 @@ build(){
 finish(){
 	echo "Installing nano..."
 	${SHPKG_SUDO} make install
-	${SHPKG_SUDO} ln -rs ${INSTALL_PREFIX}/bin/nano ${BINDIR}/shpkg-nano
+	${SHPKG_SUDO} ln -s ${INSTALL_PREFIX}/bin/nano ${BINDIR}/shpkg-nano
 }
 
 remove(){
