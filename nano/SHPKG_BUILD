@@ -21,7 +21,7 @@ case "${SHPKG_DISTRO}" in
 		shpkg_depends="ncurses"
         	;;
 	termux)
-		shpkg_build_depenes="build-essential"
+		shpkg_build_depenes="libandroid-support libandroid-glob build-essential"
 		shpkg_depends="ncurses"
 		;;
 esac
@@ -34,6 +34,7 @@ case "${SHPKG_DISTRO}" in
 	termux)
         	INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr/opt/nano-5.7"
 		BINDIR="${SHPKG_TERMUXROOT}/usr/bin"
+		LDFLAGS+=" -landroid-glob" # links android glob library
 		;;
 	*)
         	INSTALL_PREFIX="/opt/nano-5.7"
