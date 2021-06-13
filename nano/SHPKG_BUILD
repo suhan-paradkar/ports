@@ -32,7 +32,7 @@ shpkg_source="https://www.nano-editor.org/dist/v5/nano-5.7.tar.xz"
 # detect distro
 case "${SHPKG_DISTRO}" in
 	termux)
-        	INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr/opt/nano-5.7"
+        	INSTALL_PREFIX="${SHPKG_TERMUXROOT}/opt/nano-5.7"
 		BINDIR="${SHPKG_TERMUXROOT}/usr/bin"
 		LDFLAGS+=" -landroid-glob" # links android glob library
 		;;

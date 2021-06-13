@@ -16,7 +16,7 @@ shpkg_enable_verbose_logging="false"
 # detect distro
 case "${SHPKG_DISTRO}" in
 	termux)
-		INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr/bin"
+		INSTALL_PREFIX="${SHPKG_TERMUXROOT}/bin"
 		;;
 	*)
 		INSTALL_PREFIX="/usr/local/bin"

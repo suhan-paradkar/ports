@@ -26,7 +26,7 @@ shpkg_source="https://github.com/zyedidia/micro/archive/refs/tags/v2.0.9.tar.gz"
 # detect distro
 case "${SHPKG_DISTRO}" in
 	termux)
-		INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr"
+		INSTALL_PREFIX="${SHPKG_TERMUXROOT}"
 		;;
 	*)
 		INSTALL_PREFIX="/usr/local"
@@ -43,7 +43,7 @@ build(){
 
 finish(){
 	echo "Installing micro..."
-	${SHPKG_SUDO} cp micro ${INSTALL_PREFIX}/bin/shpkg-micro
+	${SHPKG_SUDO} install -m 755 micro ${INSTALL_PREFIX}/bin/shpkg-micro
 }
 
 remove(){
