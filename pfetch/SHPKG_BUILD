@@ -27,7 +27,7 @@ prepare(){
 finish(){
 	echo "Installing pfetch..."
 	${SHPKG_SUDO} install -m 755 pfetch ${INSTALL_PREFIX}/shpkg-pfetch
-	echo "to use pfetch, execute ${BOLD}shpkg-pfetch${NOATTR} command"
+	echo "To use pfetch, execute ${BOLD}shpkg-pfetch${NOATTR} command"
 }
 
 remove(){

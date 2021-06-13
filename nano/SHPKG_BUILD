@@ -55,6 +55,7 @@ finish(){
 	echo "Installing nano..."
 	${SHPKG_SUDO} make install
 	${SHPKG_SUDO} ln -s ${INSTALL_PREFIX}/bin/nano ${BINDIR}/shpkg-nano
+	echo "To use nano, execute ${BOLD}shpkg-nano${NOATTR} command"
 }
 
 remove(){

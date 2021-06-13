@@ -34,6 +34,7 @@ build(){
 finish(){
 	echo "Installing shpkg-hello binary..."
 	${SHPKG_SUDO} install -m 755 shpkg-hello "${INSTALL_PREFIX}"
+	echo "To use hello-world, execute ${BOLD}shpkg-hello${NOATTR} command"
 }
 
 remove(){
