@@ -13,16 +13,6 @@ shpkg_source_archive_zip="true"
 # tell whether to print output of extraction (default: false)
 shpkg_enable_verbose_logging="false"
 
-# detect distro
-case "${SHPKG_DISTRO}" in
-	termux)
-		INSTALL_PREFIX="${SHPKG_TERMUXROOT}/bin"
-		;;
-	*)
-		INSTALL_PREFIX="/usr/local/bin"
-		;;
-esac
-
 prepare(){
 	cd "${SRCDIR}/hello-world-master"
 }
@@ -33,10 +23,13 @@ build(){
 
 finish(){
 	echo "Installing shpkg-hello binary..."
-	${SHPKG_SUDO} install -m 755 shpkg-hello "${INSTALL_PREFIX}"
+	${SHPKG_SUDO} mkdir -p /opt/shpkg/hello-world/bin
+	${SHPKG_SUDO} install -m 755 shpkg-hello /opt/shpkg/hello-world/bin
+	${SHPKG_SUDO} ln -s /opt/shpkg/hello-world/bin/shpkg-hello /usr/local/bin
 	echo "To use hello-world, execute ${BOLD}shpkg-hello${NOATTR} command"
 }
 
 remove(){
-	${SHPKG_SUDO} rm -rf "${INSTALL_PREFIX}/shpkg-hello"
+	${SHPKG_SUDO} rm -rf /usr/local/bin/shpkg-hello
+	${SHPKG_SUDO} rm -rf /opt/shpkg/hello-world
 }

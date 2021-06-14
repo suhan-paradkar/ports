@@ -20,31 +20,14 @@ case "${SHPKG_DISTRO}" in
         	shpkg_build_depends="automake gcc clang"
 		shpkg_depends="ncurses"
         	;;
-	termux)
-		shpkg_build_depenes="libandroid-support libandroid-glob build-essential"
-		shpkg_depends="ncurses"
-		;;
 esac
 
 # package source code
 shpkg_source="https://www.nano-editor.org/dist/v5/nano-5.7.tar.xz"
 
-# detect distro
-case "${SHPKG_DISTRO}" in
-	termux)
-        	INSTALL_PREFIX="${SHPKG_TERMUXROOT}/opt/nano-5.7"
-		BINDIR="${SHPKG_TERMUXROOT}/usr/bin"
-		LDFLAGS+=" -landroid-glob" # links android glob library
-		;;
-	*)
-        	INSTALL_PREFIX="/opt/nano-5.7"
-		BINDIR="/usr/local/bin"
-		;;
-esac
-
 prepare(){
 	cd ${SRCDIR}
-	./configure --prefix=${INSTALL_PREFIX}
+	./configure --prefix=/opt/shpkg/nano
 }
 
 build(){
@@ -54,11 +37,11 @@ build(){
 finish(){
 	echo "Installing nano..."
 	${SHPKG_SUDO} make install
-	${SHPKG_SUDO} ln -s ${INSTALL_PREFIX}/bin/nano ${BINDIR}/shpkg-nano
+	${SHPKG_SUDO} ln -s /opt/shpkg/nano/bin/nano /usr/local/bin/shpkg-nano
 	echo "To use nano, execute ${BOLD}shpkg-nano${NOATTR} command"
 }
 
 remove(){
-	${SHPKG_SUDO} rm -rf ${INSTALL_PREFIX}
-	${SHPKG_SUDO} rm -rf ${BINDIR}/shpkg-nano
+	${SHPKG_SUDO} rm -rf /opt/shpkg/nano
+	${SHPKG_SUDO} rm -rf /usr/local/bin/shpkg-nano
 }

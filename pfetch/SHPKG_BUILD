@@ -10,26 +10,19 @@ shpkg_source_archive_zip="true"
 # tell whether to print output of extraction (default: false)
 shpkg_enable_verbose_logging="false"
 
-# detect distro
-case "${SHPKG_DISTRO}" in
-	termux)
-		INSTALL_PREFIX="${SHPKG_TERMUXROOT}/bin"
-		;;
-	*)
-		INSTALL_PREFIX="/usr/local/bin"
-		;;
-esac
-
 prepare(){
 	cd "${SRCDIR}/pfetch-master"
 }
 
 finish(){
 	echo "Installing pfetch..."
-	${SHPKG_SUDO} install -m 755 pfetch ${INSTALL_PREFIX}/shpkg-pfetch
+	${SHPKG_SUDO} mkdir -p /opt/shpkg/pfetch/bin
+	${SHPKG_SUDO} install -m 755 pfetch /opt/shpkg/pfetch/bin
+	${SHPKG_SUDO} ln -s /opt/shpkg/pfetch/bin/pfetch /usr/local/bin/shpkg-pfetch
 	echo "To use pfetch, execute ${BOLD}shpkg-pfetch${NOATTR} command"
 }
 
 remove(){
-	${SHPKG_SUDO} rm -rf ${INSTALL_PREFIX}/shpkg-pfetch
+	${SHPKG_SUDO} rm -rf /opt/shpkg/pfetch
+	${SHPKG_SUDO} rm -rf /usr/local/bin/shpkg-pfetch
 }

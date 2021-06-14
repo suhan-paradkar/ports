@@ -3,7 +3,7 @@ shpkg_name="Micro"
 
 # package build dependencies
 case "${SHPKG_DISTRO}" in
-	debian|termux)
+	debian)
 		shpkg_build_depends="golang build-essential"
 		;;
 	archlinux)
@@ -23,16 +23,6 @@ esac
 # package source code
 shpkg_source="https://github.com/zyedidia/micro/archive/refs/tags/v2.0.9.tar.gz"
 
-# detect distro
-case "${SHPKG_DISTRO}" in
-	termux)
-		INSTALL_PREFIX="${SHPKG_TERMUXROOT}/bin"
-		;;
-	*)
-		INSTALL_PREFIX="/usr/local/bin"
-		;;
-esac
-
 prepare(){
 	cd ${SRCDIR}
 }
@@ -43,10 +33,13 @@ build(){
 
 finish(){
 	echo "Installing micro..."
-	${SHPKG_SUDO} install -m 755 micro ${INSTALL_PREFIX}/shpkg-micro
+	${SHPKG_SUDO} mkdir -p /opt/shpkg/micro/bin
+	${SHPKG_SUDO} install -m 755 micro /opt/shpkg/micro/bin
+	${SHPKG_SUDO} ln -s /opt/shpkg/micro/bin/micro /usr/local/bin/shpkg-micro
 	echo "To use micro, execute ${BOLD}shpkg-micro${NOATTR} command"
 }
 
 remove(){
-	${SHPKG_SUDO} rm -rf ${INSTALL_PREFIX}/shpkg-micro
+	${SHPKG_SUDO} rm -rf /opt/shpkg/micro
+	${SHPKG_SUDO} rm -rf /usr/local/bin/shpkg-micro
 }
