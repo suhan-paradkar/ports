@@ -1,0 +1,68 @@
+# package name
+shpkg_name="squashfs-tools-ng"
+
+# package build dependencies
+case "${SHPKG_DISTRO}" in
+	debian)
+		shpkg_build_depends="zlib1g-dev libbz2-dev liblz4-dev liblzo2-dev libzstd-dev libattr1-dev build-essential"
+		;;
+	archlinux)
+		shpkg_build_depends="zlib bzip2 lz4 lzo zstd attr base-devel"
+		;;
+	redhat)
+		shpkg_build_depends="zlib-devel bzip2-devel lz4-devel lzo-devel libzstd-devel libattr-devel autoconf automake gcc clang"
+		;;
+	alpine)
+        	shpkg_build_depends="zlib-dev bzip2-dev lz4-dev lzo-dev zstd-dev attr-dev alpine-sdk"
+        	;;
+	nixos)
+		shpkg_build_depends="zlib bzip2 lz4 lzo zstd attr automake gcc clang"
+		;;
+esac
+
+# package source code
+shpkg_source="https://github.com/AgentD/squashfs-tools-ng/archive/refs/heads/master.zip"
+
+# tell whether to use zip as an extractor
+shpkg_source_archive_zip="true"
+
+# tell whether to print output of extraction (default: false)
+shpkg_enable_verbose_logging="false"
+
+prepare(){
+	cd "${SRCDIR}/squashfs-tools-ng-master"
+	bash autogen.sh
+	./configure --prefix=/opt/shpkg/squashfs-tools-ng
+}
+
+build(){
+	make -j$(nproc)
+}
+
+finish(){
+	echo "Installing nano..."
+	${SHPKG_SUDO} make install
+	${SHPKG_SUDO} ln -s /opt/shpkg/squashfs-tools-ng/bin/gensquashfs /usr/local/bin/shpkg-gensquashfs
+	${SHPKG_SUDO} ln -s /opt/shpkg/squashfs-tools-ng/bin/rdsquashfs /usr/local/bin/shpkg-rdsquashfs
+	${SHPKG_SUDO} ln -s /opt/shpkg/squashfs-tools-ng/bin/sqfs2tar /usr/local/bin/shpkg-sqfs2tar
+	${SHPKG_SUDO} ln -s /opt/shpkg/squashfs-tools-ng/bin/tar2sqfs /usr/local/bin/shpkg-tar2sqfs
+	${SHPKG_SUDO} ln -s /opt/shpkg/squashfs-tools-ng/bin/sqfsdiff /usr/local/bin/shpkg-sqfsdiff
+	cat <<- EOM
+		The following commands are provided by the package: ${PACKAGE_NAME}
+
+		${BOLD}- shpkg-gensquashfs
+		- shpkg-rdsquashfs
+		- shpkg-sqfs2tar
+		- shpkg-tar2sqfs
+		- shpkg-sqfsdiff${NOATTR}
+
+		You can use them to get started
+	EOM
+}
+
+remove(){
+	for sqfs in shpkg-gensquashfs shpkg-rdsquashfs shpkg-sqfs2tar shpkg-tar2sqfs shpkg-sqfsdiff; do
+		${SHPKG_SUDO} rm -rf /usr/local/bin/${sqfs}
+	done
+	${SHPKG_SUDO} rm -rf /opt/shpkg/squashfs-tools-ng
+}
