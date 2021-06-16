@@ -47,6 +47,7 @@ finish(){
 	${SHPKG_SUDO} ln -s /opt/shpkg/squashfs-tools-ng/bin/sqfs2tar /usr/local/bin/shpkg-sqfs2tar
 	${SHPKG_SUDO} ln -s /opt/shpkg/squashfs-tools-ng/bin/tar2sqfs /usr/local/bin/shpkg-tar2sqfs
 	${SHPKG_SUDO} ln -s /opt/shpkg/squashfs-tools-ng/bin/sqfsdiff /usr/local/bin/shpkg-sqfsdiff
+	echo
 	cat <<- EOM
 		The following commands are provided by the package: ${PACKAGE_NAME}
 
@@ -58,6 +59,8 @@ finish(){
 
 		You can use them to get started
 	EOM
+	echo
+	sleep 4
 }
 
 remove(){
