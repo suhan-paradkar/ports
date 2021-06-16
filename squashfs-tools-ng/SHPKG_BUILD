@@ -4,19 +4,19 @@ shpkg_name="squashfs-tools-ng"
 # package build dependencies
 case "${SHPKG_DISTRO}" in
 	debian)
-		shpkg_build_depends="zlib1g-dev libbz2-dev liblz4-dev liblzo2-dev libzstd-dev libattr1-dev build-essential"
+		shpkg_build_depends="zlib1g-dev libbz2-dev liblz4-dev liblzo2-dev libzstd-dev libattr1-dev libtool pkg-config build-essential"
 		;;
 	archlinux)
 		shpkg_build_depends="zlib bzip2 lz4 lzo zstd attr base-devel"
 		;;
 	redhat)
-		shpkg_build_depends="zlib-devel bzip2-devel lz4-devel lzo-devel libzstd-devel libattr-devel autoconf automake gcc clang"
+		shpkg_build_depends="zlib-devel bzip2-devel lz4-devel lzo-devel libzstd-devel libattr-devel pkg-config autoconf automake gcc clang"
 		;;
 	alpine)
         	shpkg_build_depends="zlib-dev bzip2-dev lz4-dev lzo-dev zstd-dev attr-dev alpine-sdk"
         	;;
 	nixos)
-		shpkg_build_depends="zlib bzip2 lz4 lzo zstd attr automake gcc clang"
+		shpkg_build_depends="zlib bzip2 lz4 lzo zstd attr pkg-config autoconf automake gcc clang"
 		;;
 esac
 
