@@ -12,7 +12,7 @@ case "${SHPKG_DISTRO}" in
 		shpkg_depends="zlib bzip2 lz4 lzo zstd attr"
 		;;
 	redhat)
-		shpkg_build_depends="pkg-config autoconf automake gcc clang"
+		shpkg_build_depends="libtool pkg-config autoconf automake gcc clang"
 		shpkg_depends="zlib-devel bzip2-devel lz4-devel lzo-devel libzstd-devel libattr-devel"
 		;;
 	alpine)
