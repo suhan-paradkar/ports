@@ -5,7 +5,7 @@ shpkg_name="Oh My ZSH"
 shpkg_source="https://github.com/ohmyzsh/ohmyzsh/archive/refs/heads/master.zip"
 
 # package dependencies
-shpkg_depends="zsh"
+shpkg_depends="zsh git"
 
 # tell whether to use zip as an extractor
 shpkg_source_archive_zip="true"
@@ -18,10 +18,19 @@ prepare(){
 }
 
 finish(){
-	ZSH=/opt/shpkg/oh-my-zsh ${SHPKG_SUDO} bash tools/install.sh --unattended
+	# check if existing oh my zsh installation exists
+	if [ -d "${HOME}/.oh-my-zsh-shpkg" ]; then
+		echo "${BOLD}An existing oh-my-zsh installation found! aborting install...${NOATTR}"
+		exit 2
+	fi
+	ZSH=${HOME}/.oh-my-zsh-shpkg bash tools/install.sh --unattended
 }
 
 remove(){
-	${SHPKG_SUDO} rm -rf /opt/shpkg/oh-my-zsh
-	mv ~/.zshrc.pre-oh-my-zsh ~/.zshrc
+	rm -rf ${HOME}/.oh-my-zsh-shpkg
+	if [ -f "${HOME}/.zshrc.pre-oh-my-zsh" ]; then
+		mv ${HOME}/.zshrc.pre-oh-my-zsh ${HOME}/.zshrc
+	else
+		rm -rf ${HOME}/.zshrc
+	fi
 }
