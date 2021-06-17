@@ -1,7 +1,7 @@
 # package name
 shpkg_name="GNU Nano"
 
-# package build dependencies
+# package build and runtime dependencies
 case "${SHPKG_DISTRO}" in
 	debian)
         	shpkg_build_depends="libncurses-dev build-essential"
