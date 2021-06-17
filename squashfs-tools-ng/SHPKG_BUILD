@@ -4,19 +4,24 @@ shpkg_name="squashfs-tools-ng"
 # package build dependencies
 case "${SHPKG_DISTRO}" in
 	debian)
-		shpkg_build_depends="zlib1g-dev libbz2-dev liblz4-dev liblzo2-dev libzstd-dev libattr1-dev libtool pkg-config build-essential"
+		shpkg_build_depends="libtool pkg-config build-essential"
+		shpkg_depends="zlib1g-dev libbz2-dev liblz4-dev liblzo2-dev libzstd-dev libattr1-dev"
 		;;
 	archlinux)
-		shpkg_build_depends="zlib bzip2 lz4 lzo zstd attr base-devel"
+		shpkg_build_depends="base-devel"
+		shpkg_depends="zlib bzip2 lz4 lzo zstd attr"
 		;;
 	redhat)
-		shpkg_build_depends="zlib-devel bzip2-devel lz4-devel lzo-devel libzstd-devel libattr-devel pkg-config autoconf automake gcc clang"
+		shpkg_build_depends="pkg-config autoconf automake gcc clang"
+		shpkg_depends="zlib-devel bzip2-devel lz4-devel lzo-devel libzstd-devel libattr-devel"
 		;;
 	alpine)
-        	shpkg_build_depends="zlib-dev bzip2-dev lz4-dev lzo-dev zstd-dev attr-dev alpine-sdk"
+        	shpkg_build_depends="alpine-sdk"
+		shpkg_depends="zlib-dev bzip2-dev lz4-dev lzo-dev zstd-dev attr-dev"
         	;;
 	nixos)
-		shpkg_build_depends="zlib bzip2 lz4 lzo zstd attr pkg-config autoconf automake gcc clang"
+		shpkg_build_depends="pkg-config autoconf automake gcc clang"
+		shpkg_depends="zlib bzip2 lz4 lzo zstd attr"
 		;;
 esac
 
