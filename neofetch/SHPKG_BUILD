@@ -10,26 +10,19 @@ shpkg_source_archive_zip="true"
 # tell whether to print output of extraction (default: false)
 shpkg_enable_verbose_logging="false"
 
-# detect distro
-case "${SHPKG_DISTRO}" in
-	termux)
-		INSTALL_PREFIX="${SHPKG_TERMUXROOT}/bin"
-		;;
-	*)
-		INSTALL_PREFIX="/usr/local/bin"
-		;;
-esac
-
 prepare(){
 	cd "${SRCDIR}/neofetch-master"
 }
 
 finish(){
 	echo "Installing neofetch..."
-	${SHPKG_SUDO} install -m 755 neofetch ${INSTALL_PREFIX}/shpkg-neofetch
+	${SHPKG_SUDO} mkdir -p /opt/shpkg/neofetch/bin
+	${SHPKG_SUDO} install -m 755 neofetch /opt/shpkg/neofetch/bin
+	${SHPKG_SUDO} ln -s /opt/shpkg/neofetch/bin/neofetch /usr/local/bin/shpkg-neofetch
 	echo "To use neofetch, execute ${BOLD}shpkg-neofetch${NOATTR} command"
 }
 
 remove(){
-	${SHPKG_SUDO} rm -rf ${INSTALL_PREFIX}/shpkg-neofetch
+	${SHPKG_SUDO} rm -rf /opt/shpkg/neofetch
+	${SHPKG_SUDO} rm -rf /usr/local/bin/shpkg-neofetch
 }

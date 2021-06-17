@@ -13,25 +13,15 @@ shpkg_source_archive_zip="true"
 # tell whether to print output of extraction (default: false)
 shpkg_enable_verbose_logging="false"
 
-# detect distro
-case "${SHPKG_DISTRO}" in
-	termux)
-		INSTALL_PREFIX="${SHPKG_TERMUXROOT}/opt/oh-my-zsh"
-		;;
-	*)
-		INSTALL_PREFIX="/opt/oh-my-zsh"
-		;;
-esac
-
 prepare(){
 	cd "${SRCDIR}/ohmyzsh-master"
 }
 
 finish(){
-	ZSH=${INSTALL_PREFIX} ${SHPKG_SUDO} bash tools/install.sh --unattended
+	ZSH=/opt/shpkg/oh-my-zsh ${SHPKG_SUDO} bash tools/install.sh --unattended
 }
 
 remove(){
-	${SHPKG_SUDO} rm -rf ${INSTALL_PREFIX}
+	${SHPKG_SUDO} rm -rf /opt/shpkg/oh-my-zsh
 	mv ~/.zshrc.pre-oh-my-zsh ~/.zshrc
 }
