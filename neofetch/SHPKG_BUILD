@@ -1,0 +1,35 @@
+# package name
+shpkg_name="neofetch"
+
+# package source code
+shpkg_source="https://github.com/dylanaraps/neofetch/archive/refs/heads/master.zip"
+
+# tell whether to use zip as an extractor
+shpkg_source_archive_zip="true"
+
+# tell whether to print output of extraction (default: false)
+shpkg_enable_verbose_logging="false"
+
+# detect distro
+case "${SHPKG_DISTRO}" in
+	termux)
+		INSTALL_PREFIX="${SHPKG_TERMUXROOT}/bin"
+		;;
+	*)
+		INSTALL_PREFIX="/usr/local/bin"
+		;;
+esac
+
+prepare(){
+	cd "${SRCDIR}/neofetch-master"
+}
+
+finish(){
+	echo "Installing neofetch..."
+	${SHPKG_SUDO} install -m 755 neofetch ${INSTALL_PREFIX}/shpkg-neofetch
+	echo "To use neofetch, execute ${BOLD}shpkg-neofetch${NOATTR} command"
+}
+
+remove(){
+	${SHPKG_SUDO} rm -rf ${INSTALL_PREFIX}/shpkg-neofetch
+}
