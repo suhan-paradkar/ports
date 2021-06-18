@@ -45,7 +45,7 @@ build(){
 }
 
 finish(){
-	echo "Installing nano..."
+	echo "Installing squashfs-tools-ng..."
 	${SHPKG_SUDO} make install
 	${SHPKG_SUDO} ln -s /opt/shpkg/squashfs-tools-ng/bin/gensquashfs /usr/local/bin/shpkg-gensquashfs
 	${SHPKG_SUDO} ln -s /opt/shpkg/squashfs-tools-ng/bin/rdsquashfs /usr/local/bin/shpkg-rdsquashfs
