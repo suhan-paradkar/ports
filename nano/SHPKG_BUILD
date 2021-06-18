@@ -23,7 +23,7 @@ case "${SHPKG_DISTRO}" in
 esac
 
 # package source code
-shpkg_source="https://www.nano-editor.org/dist/v5/nano-5.7.tar.xz"
+shpkg_source="https://www.nano-editor.org/dist/v5/nano-5.8.tar.xz"
 
 prepare(){
 	cd ${SRCDIR}
