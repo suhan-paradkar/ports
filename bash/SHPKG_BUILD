@@ -3,36 +3,29 @@ shpkg_name="Bash"
 
 # package build dependencies
 case "${SHPKG_DISTRO}" in
-	debian|termux)
+	debian)
 		shpkg_build_depends="build-essential"
 		;;
 	archlinux)
 		shpkg_build_depends="base-devel"
 		;;
 	redhat)
-		shpkg_build_depends="make automake gcc" #??????
+		shpkg_build_depends="make automake gcc"
 		;;
 	alpine)
-		shpkg_build_depends="alpine-sdk" #??????
+		shpkg_build_depends="alpine-sdk"
+		;;
+	nixos)
+		shpkg_build_depends="automake gcc clang"
 		;;
 esac
 
 # package source code
 shpkg_source="https://ftpmirror.gnu.org/bash/bash-5.1.tar.gz"
 
-# detect distro
-case "${SHPKG_DISTRO}" in
-	termux)
-		INSTALL_PREFIX="${SHPKG_TERMUXROOT}/usr/opt/bash-5.1"
-		;;
-	*)
-		INSTALL_PREFIX="/opt/bash-5.1"
-		;;
-esac
-
 prepare(){
 	cd ${SRCDIR}
-	./configure --prefix=${INSTALL_PREFIX}
+	./configure --prefix=/opt/shpkg/bash
 }
 
 build(){
@@ -42,8 +35,11 @@ build(){
 finish(){
 	echo "Installing bash..."
 	${SHPKG_SUDO} make install
+	${SHPKG_SUDO} ln -s /opt/shpkg/bash/bin/bash /usr/local/bin/shpkg-bash
+	echo "To use bash, execute ${BOLD}shpkg-bash${NOATTR} command"
 }
 
 remove(){
-	${SHPKG_SUDO} make uninstall
+	${SHPKG_SUDO} rm -rf /opt/shpkg/bash
+	${SHPKG_SUDO} rm -rf /usr/local/bin/shpkg-bash
 }
