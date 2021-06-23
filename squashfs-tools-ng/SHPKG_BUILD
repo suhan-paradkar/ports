@@ -16,7 +16,7 @@ case "${SHPKG_DISTRO}" in
 		shpkg_depends="zlib-devel bzip2-devel lz4-devel lzo-devel libzstd-devel libattr-devel"
 		;;
 	alpine)
-        	shpkg_build_depends="alpine-sdk"
+        	shpkg_build_depends="libtool autoconf automake alpine-sdk"
 		shpkg_depends="zlib-dev bzip2-dev lz4-dev lzo-dev zstd-dev attr-dev"
         	;;
 	nixos)
