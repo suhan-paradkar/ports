@@ -1,0 +1,51 @@
+# package name
+shpkg_name="curl"
+
+# package build dependencies
+case "${SHPKG_DISTRO}" in
+	debian)
+		shpkg_build_depends="build-essential"
+		shpkg_depends="libssl-dev"
+		;;
+	archlinux)
+		shpkg_build_depends="base-devel"
+		shpkg_depends="openssl"
+		;;
+	redhat)
+		shpkg_build_depends="make automake gcc"
+		shpkg_depends="openssl-devel"
+		;;
+	alpine)
+		shpkg_build_depends="alpine-sdk"
+		shpkg_depends="openssl-dev"
+		;;
+	nixos)
+		shpkg_build_depends="automake gcc clang"
+		shpkg_depends="openssl"
+		;;
+esac
+
+# package source code
+shpkg_source="https://curl.se/download/curl-7.77.0.tar.gz"
+
+prepare(){
+	cd ${SRCDIR}
+	./configure --prefix=/opt/shpkg/curl --with-openssl
+}
+
+build(){
+	make -j$(nproc)
+}
+
+finish(){
+	echo "Installing curl..."
+	${SHPKG_SUDO} make install
+	${SHPKG_SUDO} ln -s /opt/shpkg/curl/bin/curl /usr/local/bin/shpkg-curl
+	echo "To use curl, execute ${BOLD}shpkg-curl${NOATTR} command"
+}
+
+remove(){
+	${SHPKG_SUDO} rm -rf /opt/shpkg/curl
+	${SHPKG_SUDO} rm -rf /usr/local/bin/shpkg-curl
+}
+
