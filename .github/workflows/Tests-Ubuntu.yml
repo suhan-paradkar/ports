@@ -1,4 +1,4 @@
-name: Tests-Ubuntu
+name: Ubuntu (debian) tests
 
 on:
   push:
@@ -50,11 +50,6 @@ jobs:
                 echo "$pkg" >> ./deleted_packages.txt
               else
                 echo "$pkg" >> ./built_packages.txt
-                # If there are subpackages we want to create a list of those
-                # as well
-                for file in $(find "packages/${pkg}/" -maxdepth 1 -type f -name \*.subpackage.sh | sort); do
-                  echo "$(basename "${file%%.subpackage.sh}")" >> ./built_subpackages.txt
-                done
               fi
             fi
           done<<<${CHANGED_FILES}
@@ -70,17 +65,17 @@ jobs:
           fi
       - name: Install shpkg
         run: |
-             wget https://raw.githubusercontent.com/shpkg/shpkg/master/shpkg
-             sudo mv shpkg $PREFIX/bin
+             sudo curl https://raw.githubusercontent.com/shpkg/shpkg/master/shpkg > /usr/local/bin/shpkg
+             sudo chmod 755 /usr/local/bin/shpkg
 
       - name: Configure scripts
         run: |
-             cp -r /home/runner/work/ports/ports/* $HOME/.shpkg
+             cp -r /home/runner/work/ports/ports $HOME/.shpkg
 
       - name: Installation Checks
         run: |
             if [ -f ./built_packages.txt ]; then
               for $pkg in ./build_packages.txt do
-                  shpkg install $pkg
+                  yes | shpkg install $pkg
               done
             fi
