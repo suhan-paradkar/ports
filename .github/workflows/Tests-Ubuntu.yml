@@ -74,6 +74,6 @@ jobs:
         run: |
             if [ -f ./built_packages.txt ]; then
               for $pkg in ./build_packages.txt do
-                  yes | shpkg install $pkg
+                  shpkg install $pkg
               done
             fi
