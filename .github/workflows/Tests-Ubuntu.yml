@@ -43,7 +43,6 @@ jobs:
           # further processing.
           for file in **/*; do
               
-            if [[ $file= ~^([a-z0-9-]*)/.*$ ]]; then
               # package, check if it was deleted or updated
               pkg=${BASH_REMATCH[1]}
               if [ ! -d "packages/${pkg}" ]; then
@@ -51,7 +50,6 @@ jobs:
               else
                 echo "$pkg" >> ./built_packages.txt
               fi
-            fi
           done<<<${CHANGED_FILES}
           # Fix so that lists do not contain duplicates
           if [ -f ./built_packages.txt ]; then
