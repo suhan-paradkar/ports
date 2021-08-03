@@ -41,7 +41,7 @@ jobs:
           # Parse changed files and identify new packages and deleted packages.
           # Create lists of those packages that will be passed to upload job for
           # further processing.
-          for read file; do
+          for file in **/*; do
               
             if [[ $file= ~^([a-z0-9-]*)/.*$ ]]; then
               # package, check if it was deleted or updated
