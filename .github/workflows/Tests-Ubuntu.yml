@@ -1,0 +1,79 @@
+name: Ubuntu (debian) tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+            fetch-depth: 1000
+
+      - name: Get diff
+        run: |
+          BASE_COMMIT=$(jq --raw-output .pull_request.base.sha "$GITHUB_EVENT_PATH")
+          OLD_COMMIT=$(jq --raw-output .commits[0].id "$GITHUB_EVENT_PATH")
+          HEAD_COMMIT=$(jq --raw-output .commits[-1].id "$GITHUB_EVENT_PATH")
+          if [ "$BASE_COMMIT" = "null" ]; then
+            if [ "$OLD_COMMIT" = "$HEAD_COMMIT" ]; then
+              # Single-commit push.
+              echo "Processing commit: ${HEAD_COMMIT}"
+              CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "${HEAD_COMMIT}")
+            else
+              # Multi-commit push.
+              OLD_COMMIT="${OLD_COMMIT}~1"
+              echo "Processing commit range: ${OLD_COMMIT}..${HEAD_COMMIT}"
+              CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "${OLD_COMMIT}" "${HEAD_COMMIT}")
+            fi
+          else
+            # Pull requests.
+            echo "Processing pull request #$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH"): ${BASE_COMMIT}..HEAD"
+            CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "${BASE_COMMIT}" "HEAD")
+          fi
+        
+          # Parse changed files and identify new packages and deleted packages.
+          # Create lists of those packages that will be passed to upload job for
+          # further processing.
+          for file in **/*; do
+              
+              # package, check if it was deleted or updated
+              pkg=${BASH_REMATCH[1]}
+              if [ ! -d "packages/${pkg}" ]; then
+                echo "$pkg" >> ./deleted_packages.txt
+              else
+                echo "$pkg" >> ./built_packages.txt
+              fi
+          done<<<${CHANGED_FILES}
+          # Fix so that lists do not contain duplicates
+          if [ -f ./built_packages.txt ]; then
+            uniq ./built_packages.txt > ./built_packages.txt.tmp
+            mv ./built_packages.txt.tmp ./built_packages.txt
+          fi
+  
+          if [ -f ./deleted_packages.txt ]; then
+            uniq ./deleted_packages.txt > ./deleted_packages.txt.tmp
+            mv ./deleted_packages.txt.tmp ./deleted_packages.txt
+          fi
+      - name: Install shpkg
+        run: |
+             sudo curl https://raw.githubusercontent.com/shpkg/shpkg/master/shpkg > /usr/local/bin/shpkg
+             sudo chmod 755 /usr/local/bin/shpkg
+
+      - name: Configure scripts
+        run: |
+             cp -r /home/runner/work/ports/ports $HOME/.shpkg
+
+      - name: Installation Checks
+        run: |
+            if [ -f ./built_packages.txt ]; then
+              for $pkg in ./build_packages.txt do
+                  /usr/local/bin/shpkg install $pkg
+              done
+            fi
